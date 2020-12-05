@@ -3,7 +3,6 @@ import collections
 import itertools
 import random
 import time
-import sys
 
 
 def check_table(table):
@@ -28,7 +27,7 @@ def print_table_stats(table):
 
     m = len(table)
     n = len(sums)
-    balance = (n + 1) / 2.;
+    balance = (n + 1) / 2.
     print('Ожидаемое среднее место {:g}.'.format(balance), end=' ')
     if min_sum == max_sum:
         print('Расписание сбалансировано.')
@@ -47,7 +46,7 @@ def print_table(table):
 
     def print_list(lst):
         print(' '.join(map(lambda v: str(v).rjust(place_width), lst)))
-        
+
     print('-' * (n * place_width + n - 1))
     print_list(title)
     print('-' * (n * place_width + n - 1))
@@ -158,7 +157,10 @@ def merge_permutations(p0, p1):
     m0 = n0 // 2
     m1 = n1 // 2
 
-    bits = itertools.chain(interleave(m0, m1), reversed(tuple(interleave(n0 - m0, n1 - m1))))
+    bits = itertools.chain(
+        interleave(m0, m1),
+        reversed(tuple(interleave(n0 - m0, n1 - m1)))
+    )
 
     index = [[], []]
     for i, b in enumerate(bits):
@@ -190,16 +192,34 @@ def permuted_table(n, m, rnd):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Турнирная таблица для соревнований рыбаков в три тура.')
+    parser = argparse.ArgumentParser(
+        description='Турнирная таблица для соревнований рыбаков в три тура.'
+    )
     parser.add_argument('n', metavar='N', type=int, help='число участников')
-    parser.add_argument('--seed', metavar='N', type=int, default=None, help='начальное состояние генератора случайных чисел')
-    parser.add_argument('--small', metavar='N', type=int, default=25, help='меньше этого размера ищется наилучшее решение (25 по умолчанию)')
+    parser.add_argument(
+        '--seed',
+        metavar='N',
+        type=int,
+        default=None,
+        help='начальное состояние генератора случайных чисел'
+    )
+    parser.add_argument(
+        '--small',
+        metavar='N',
+        type=int,
+        default=25,
+        help='меньше этого размера ищется наилучшее решение (25 по умолчанию)'
+    )
 
     args = parser.parse_args()
 
     if args.seed is None:
         args.seed = random.Random(time.time_ns()).randrange(10 ** 6)
-        print(f"Используйте '--seed {args.seed}' чтобы воспроизвести результаты.\n")
+        print(
+            "Используйте '--seed {}' чтобы воспроизвести результаты.\n".format(
+                args.seed
+            )
+        )
 
     table = permuted_table(args.n, args.small, random.Random(args.seed))
     check_table(table)
