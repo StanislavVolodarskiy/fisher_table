@@ -54,6 +54,21 @@ def print_table(table):
         print_list(p)
     print('-' * (n * place_width + n - 1))
 
+    print()
+
+    table2 = collections.defaultdict(list)
+    for p in table:
+        for i, j in enumerate(p, 1):
+            table2[j].append(i)
+    table2 = list(table2.items())
+    table2.sort()
+    for k, lst in table2:
+        print('{}: {} : {:.4g}'.format(
+            str(k).rjust(place_width),
+            ' '.join(map(lambda v: str(v).rjust(place_width), lst)),
+            sum(lst) / len(lst)
+        ))
+
 
 def search_permutations(values, callback):
     lst = list(values)
