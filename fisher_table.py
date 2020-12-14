@@ -38,7 +38,7 @@ def print_table_stats(table):
         ))
 
 
-def print_table(table):
+def print_table_1(table):
     n = max(map(len, table))
 
     title = range(1, n + 1)
@@ -54,8 +54,9 @@ def print_table(table):
         print_list(p)
     print('-' * (n * place_width + n - 1))
 
-    print()
 
+def print_table_2(table):
+    place_width = max(map(len, map(str, itertools.chain(*table))))
     table2 = collections.defaultdict(list)
     for p in table:
         for i, j in enumerate(p, 1):
@@ -238,9 +239,11 @@ def main():
 
     table = permuted_table(args.n, args.small, random.Random(args.seed))
     check_table(table)
+    print_table_1(table)
+    print()
     print_table_stats(table)
     print()
-    print_table(table)
+    print_table_2(table)
 
 
 if __name__ == "__main__":
